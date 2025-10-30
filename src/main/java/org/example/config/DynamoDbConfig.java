@@ -12,10 +12,10 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 @Configuration
 public class DynamoDbConfig {
 
-    @Value("${MY_ACCESS_KEY_ID}")
+    @Value("")
     private String accessKeyId;
 
-    @Value("${MY_SECRET_ACCESS_KEY}")
+    @Value("")
     private String secretAccessKey;
 
     @Bean
