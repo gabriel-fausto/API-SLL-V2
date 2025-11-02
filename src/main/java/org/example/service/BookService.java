@@ -47,6 +47,10 @@ public class BookService {
     public Book updateBook(String idLivro, Book book) {
         boolean atualizarImagem = false;
         Book before = bookRepository.findById(idLivro);
+        if(before == null) {
+            throw new RuntimeException("Livro nao encontrado");
+        }
+
         if(!before.getImageFileName().equals(book.getImageFileName())) {
             atualizarImagem = true;
         }
