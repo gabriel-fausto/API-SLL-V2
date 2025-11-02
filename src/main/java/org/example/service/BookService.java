@@ -1,7 +1,7 @@
 package org.example.service;
 
-import lombok.RequiredArgsConstructor;
 import org.example.dto.Book;
+import org.example.dto.PagedResult;
 import org.example.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,5 +61,16 @@ public class BookService {
 
     public void deleteBook(String id) {
         bookRepository.deleteById(id);
+    }
+
+    public PagedResult findBooks(String lastItem, int pageSize) {
+        PagedResult pr = bookRepository.findBooksPage(lastItem, pageSize);
+        pr.getBooks().forEach(book -> {
+            if(book.getImageFileName() != null && !book.getImageFileName().isEmpty()) {
+                book.setPreSignedURL(fileService.generatePreSignedUrl(book.getImageFileName(), SdkHttpMethod.GET));
+            }
+        });
+
+        return pr;
     }
 }

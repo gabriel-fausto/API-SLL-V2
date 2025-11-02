@@ -2,6 +2,7 @@ package org.example.controller;
 
 import jakarta.validation.Valid;
 import org.example.dto.Book;
+import org.example.dto.PagedResult;
 import org.example.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,5 +47,11 @@ public class BookController {
     public ResponseEntity<Void> deleteBook(@PathVariable String idLivro) {
         bookService.deleteBook(idLivro);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(value = {"/list/{pageSize}","/list/{pageSize}/{lastItem}"}, produces = "application/json")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<PagedResult> lista(@PathVariable int pageSize, @PathVariable(required = false) String lastItem) {
+        return new ResponseEntity<>(bookService.findBooks(lastItem, pageSize), HttpStatus.OK);
     }
 }

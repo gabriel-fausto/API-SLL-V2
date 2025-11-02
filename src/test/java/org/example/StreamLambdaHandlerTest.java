@@ -55,6 +55,23 @@ public class StreamLambdaHandlerTest {
     }
 
     @Test
+    public void listBooks_streamRequest() {
+        InputStream requestStream = new AwsProxyRequestBuilder("/books/list/2", HttpMethod.GET)
+                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+                .buildStream();
+        ByteArrayOutputStream responseStream = new ByteArrayOutputStream();
+
+        handle(requestStream, responseStream);
+
+        AwsProxyResponse response = readResponse(responseStream);
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatusCode());
+
+        System.out.println(response.getBody());
+    }
+
+    @Test
     public void invalidResource_streamRequest_responds404() {
         InputStream requestStream = new AwsProxyRequestBuilder("/pong", HttpMethod.GET)
                                             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
