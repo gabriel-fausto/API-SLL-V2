@@ -7,8 +7,6 @@ import org.example.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public class AuthService {
     private final UserRepository userRepository;
@@ -23,7 +21,6 @@ public class AuthService {
             throw new IllegalArgumentException("E-mail já cadastrado");
         }
         User u = new User();
-        u.setUserId(UUID.randomUUID().toString());
         u.setEmail(req.getEmail());
         u.setName(req.getName());
         u.setPasswordHash(passwordEncoder.encode(req.getPassword()));
@@ -34,10 +31,6 @@ public class AuthService {
 
     public boolean login(LoginRequest req) {
         User u = userRepository.findByEmail(req.getEmail());
-        if (u == null) throw new IllegalArgumentException("Credenciais inválidas");
-        if (!passwordEncoder.matches(req.getPassword(), u.getPasswordHash())) {
-            throw new IllegalArgumentException("Credenciais inválidas");
-        }
-        return true;
+        return u != null && passwordEncoder.matches(req.getPassword(), u.getPasswordHash());
     }
 }

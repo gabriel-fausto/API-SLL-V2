@@ -22,9 +22,12 @@ public class AuthController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/login", produces = "application/json")
+    @PostMapping(value = "/login", consumes = "application/json")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<Boolean> login(@Valid @RequestBody LoginRequest req) {
-        return new ResponseEntity<>(authService.login(req), HttpStatus.OK);
+    public ResponseEntity login(@Valid @RequestBody LoginRequest req) {
+        if(authService.login(req)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }

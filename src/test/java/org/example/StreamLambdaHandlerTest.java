@@ -7,6 +7,8 @@ import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.services.lambda.runtime.Context;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.dto.LoginRequest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +20,8 @@ import jakarta.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,6 +58,39 @@ public class StreamLambdaHandlerTest {
         assertTrue(response.getMultiValueHeaders().getFirst(HttpHeaders.CONTENT_TYPE).startsWith(MediaType.APPLICATION_JSON));
     }
 
+    /*@Test
+    public void login_streamRequest() throws Exception {
+        LoginRequest teste = new LoginRequest();
+        teste.setEmail("gabriel.dota16@gmail.com");
+        teste.setPassword("teste123");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> data = new HashMap<>();
+        data.put("email", "gabriel.dota16@gmail.com");
+        data.put("password", "teste123");
+        String jsonBody = objectMapper.writeValueAsString(data);
+
+        InputStream requestStream = new AwsProxyRequestBuilder("/auth/login", HttpMethod.POST)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .body(jsonBody)
+                .buildStream();
+        ByteArrayOutputStream responseStream = new ByteArrayOutputStream();
+
+        handle(requestStream, responseStream);
+
+        AwsProxyResponse response = readResponse(responseStream);
+        assertNotNull(response);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatusCode());
+
+        assertFalse(response.isBase64Encoded());
+
+        assertTrue(response.getBody().contains("pong"));
+        assertTrue(response.getBody().contains("Hello, World!"));
+
+        assertTrue(response.getMultiValueHeaders().containsKey(HttpHeaders.CONTENT_TYPE));
+        assertTrue(response.getMultiValueHeaders().getFirst(HttpHeaders.CONTENT_TYPE).startsWith(MediaType.APPLICATION_JSON));
+    }
+*/
     @Test
     public void listBooks_streamRequest() {
         InputStream requestStream = new AwsProxyRequestBuilder("/books/list/2", HttpMethod.GET)

@@ -1,16 +1,16 @@
 package org.example.service;
 
 import org.example.dto.User;
-import org.example.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.example.repository.UserRepository;
 
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     public User updateUser(User user) {
         User before = userRepository.findByEmail(user.getEmail());
