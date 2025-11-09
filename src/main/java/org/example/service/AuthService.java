@@ -29,8 +29,12 @@ public class AuthService {
         return u;
     }
 
-    public boolean login(LoginRequest req) {
+    public User login(LoginRequest req) {
         User u = userRepository.findByEmail(req.getEmail());
-        return u != null && passwordEncoder.matches(req.getPassword(), u.getPasswordHash());
+        if(u != null && passwordEncoder.matches(req.getPassword(), u.getPasswordHash())) {
+            u.setPasswordHash(null);
+            return u;
+        }
+        return null;
     }
 }

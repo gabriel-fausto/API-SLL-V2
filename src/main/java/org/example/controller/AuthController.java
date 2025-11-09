@@ -25,9 +25,10 @@ public class AuthController {
     @PostMapping(value = "/login", consumes = "application/json")
     @CrossOrigin(origins = "*")
     public ResponseEntity login(@Valid @RequestBody LoginRequest req) {
-        if(authService.login(req)) {
-            return new ResponseEntity<>(HttpStatus.OK);
+        User usuario = authService.login(req);
+        if(authService.login(req) != null) {
+            return new ResponseEntity<>(usuario, HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>("Login invalido!", HttpStatus.UNAUTHORIZED);
     }
 }

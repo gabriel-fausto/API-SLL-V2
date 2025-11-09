@@ -14,7 +14,7 @@ import org.example.controller.UserController;
 // We use direct @Import instead of @ComponentScan to speed up cold starts
 // @ComponentScan(basePackages = "org.example.controller")
 // BookController.class, UserController.class, AuthController.class
-@Import({ PingController.class  })
+@Import({ PingController.class, BookController.class, UserController.class, AuthController.class  })
 public class Application {
 
     public static void main(String[] args) {
