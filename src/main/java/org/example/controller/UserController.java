@@ -17,8 +17,13 @@ public class UserController {
 
     @GetMapping(value = "/{email}", produces = "application/json")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<User> getBook(@PathVariable String email) {
-        return new ResponseEntity<>(userService.findByEmail(email), HttpStatus.OK);
+    public ResponseEntity<Void> emailExists(@PathVariable String email) {
+        if(userService.existsByEmail(email)) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        }
     }
 
     @PutMapping(produces = "application/json", consumes = "application/json")

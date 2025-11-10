@@ -30,10 +30,10 @@ public class BookController {
         return new ResponseEntity<>(bookService.getBook(idLivro), HttpStatus.OK);
     }
 
-    @PostMapping(produces = "application/json", consumes = "application/json")
+    @PostMapping(value = "/{email}", produces = "application/json", consumes = "application/json")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<Book> createBook(@Valid @RequestBody Book book) {
-        return new ResponseEntity<>(bookService.addBook(book), HttpStatus.CREATED);
+    public ResponseEntity<Book> createBook(@Valid @PathVariable String email, @RequestBody Book book) {
+        return new ResponseEntity<>(bookService.addBook(book, email), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{idLivro}", produces = "application/json", consumes = "application/json")

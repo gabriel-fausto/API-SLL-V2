@@ -7,6 +7,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -18,13 +19,9 @@ public class User {
     private String cpf;
     private LocalDate birthDate;
     private String phoneNumber;
-    private String cep;
-    private String state;
-    private String city;
-    private String street;
-    private String number;
-    private String complement;
-    private String neighborhood;
+    private Address address;
+    private Preferences preferences;
+    private List<String> bookIDs;
 
     @DynamoDbPartitionKey
     @DynamoDbAttribute("email")

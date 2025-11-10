@@ -16,7 +16,10 @@ public class BookService {
     private BookRepository bookRepository;
 
     @Autowired
-    private FileService  fileService;
+    private FileService fileService;
+
+    @Autowired
+    private UserService userService;
 
     public List<Book> getBooks() {
         List<Book> books = bookRepository.findAll();
@@ -38,8 +41,13 @@ public class BookService {
         return book;
     }
 
-    public Book addBook(Book book) {
+    public Book addBook(Book book, String email) {
+        if(!userService.existsByEmail(email)) {
+            throw new RuntimeException("Usuário não encontrado");
+        }
+
         book = bookRepository.save(book);
+        userService.addBookToUser(email, book.getId());
         book.setPreSignedURL(fileService.generatePreSignedUrl(book.getImageFileName(), SdkHttpMethod.PUT));
         return book;
     }

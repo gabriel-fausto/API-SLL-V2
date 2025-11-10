@@ -23,9 +23,16 @@ public class UserService {
         return user;
     }
 
-    public User findByEmail(String email) {
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    public void addBookToUser(String email, String bookId) {
         User user = userRepository.findByEmail(email);
-        user.setPasswordHash(null);
-        return user;
+        if (user == null) {
+            throw new IllegalArgumentException("Usuário não encontrado");
+        }
+        user.getBookIDs().add(bookId);
+        userRepository.update(user);
     }
 }
