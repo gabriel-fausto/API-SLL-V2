@@ -7,6 +7,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -26,4 +27,11 @@ public class User {
     @DynamoDbPartitionKey
     @DynamoDbAttribute("email")
     public String getEmail() { return email; }
+
+    public List<String> getBookIDs() {
+        if(bookIDs == null) {
+            bookIDs = new ArrayList<>();
+        }
+        return bookIDs;
+    }
 }
