@@ -34,6 +34,8 @@ public class Book {
 
     private transient String preSignedURL;
 
+    private String userID;
+
     @DynamoDbPartitionKey
     @DynamoDbAttribute(value = "book_id")
     public String getId() {

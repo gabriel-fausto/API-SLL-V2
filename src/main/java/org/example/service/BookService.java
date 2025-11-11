@@ -45,7 +45,7 @@ public class BookService {
         if(!userService.existsByEmail(email)) {
             throw new RuntimeException("Usuário não encontrado");
         }
-
+        book.setUserID(email);
         book = bookRepository.save(book);
         userService.addBookToUser(email, book.getId());
         book.setPreSignedURL(fileService.generatePreSignedUrl(book.getImageFileName(), SdkHttpMethod.PUT));
@@ -63,6 +63,8 @@ public class BookService {
             atualizarImagem = true;
         }
 
+        // não permite alteração do dono do livro por esse método
+        book.setUserID(before.getUserID());
         book = bookRepository.update(book);
         if(atualizarImagem) {
             book.setPreSignedURL(fileService.generatePreSignedUrl(book.getImageFileName(), SdkHttpMethod.PUT));
