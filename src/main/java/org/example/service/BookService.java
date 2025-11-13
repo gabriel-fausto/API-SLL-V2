@@ -25,6 +25,7 @@ public class BookService {
         List<Book> books = bookRepository.findAll();
 
         books.forEach(book -> {
+            book.setUserID(null);
             if(book.getImageFileName() != null && !book.getImageFileName().isEmpty()) {
                 book.setPreSignedURL(fileService.generatePreSignedUrl(book.getImageFileName(), SdkHttpMethod.GET));
             }
@@ -35,6 +36,7 @@ public class BookService {
 
     public Book getBook(String id) {
         Book book = bookRepository.findById(id);
+        book.setUserID(null);
         if(book.getImageFileName() != null && !book.getImageFileName().isEmpty()) {
             book.setPreSignedURL(fileService.generatePreSignedUrl(book.getImageFileName(), SdkHttpMethod.GET));
         }
@@ -80,6 +82,7 @@ public class BookService {
     public PagedResult findBooks(String lastItem, int pageSize) {
         PagedResult pr = bookRepository.findBooksPage(lastItem, pageSize);
         pr.getBooks().forEach(book -> {
+            book.setUserID(null);
             if(book.getImageFileName() != null && !book.getImageFileName().isEmpty()) {
                 book.setPreSignedURL(fileService.generatePreSignedUrl(book.getImageFileName(), SdkHttpMethod.GET));
             }
